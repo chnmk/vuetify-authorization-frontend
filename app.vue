@@ -64,8 +64,8 @@ value => {
 
 function submit() {
   axios.post('http://localhost:8080/signup', {
-    username: username,
-    password: password
+    username: username.value,
+    password: password.value
   })
   .then(function (response) {
     console.log(response);
