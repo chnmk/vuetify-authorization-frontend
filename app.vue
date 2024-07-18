@@ -20,7 +20,7 @@
           label="Password"
         ></v-text-field>
 
-        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
+        <v-btn class="mt-2" type="submit" block @click="submit">Submit</v-btn>
       </v-form>
     </v-sheet>
   </v-app>
@@ -28,11 +28,12 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios';
 
 const username = ref('')
 const usernameRules = [
   value => {
-    if (value?.length > 5) return true
+    if (value?.length >= 5) return true
     return 'Username must be at least 5 characters.'
   },
   value => {
@@ -48,7 +49,7 @@ const usernameRules = [
 const password = ref('')
 const passwordRules = [
 value => {
-    if (value?.length > 5) return true
+    if (value?.length >= 5) return true
     return 'Password must be at least 5 characters.'
   },
   value => {
@@ -60,4 +61,17 @@ value => {
     return 'Must contain at least one latin character.'
   },
 ]
+
+function submit() {
+  axios.post('http://localhost:8080/signup', {
+    username: username,
+    password: password
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
 </script>
