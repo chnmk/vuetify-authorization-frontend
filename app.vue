@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-card class="mx-auto my-auto" width="300">
+    <v-card class="mx-auto my-auto" width="300" v-if="!tempSignedFlag">
       <v-tabs class="ma-4" v-model="tab" align-tabs="center">
         <v-tab value="signin">Sign In</v-tab>
         <v-tab value="signup">Sign Up</v-tab>
@@ -13,17 +13,15 @@
               :rules="usernameRules"
               label="Username"
             ></v-text-field>
-
             <v-text-field
               v-model="password"
               :rules="passwordRules"
               label="Password"
+              type="password"
             ></v-text-field>
-
-            <v-btn class="my-2" type="submit" block @click="submitSignin">Submit</v-btn>
+            <v-btn class="mt-2" type="submit" block @click="submitSignin">Submit</v-btn>
           </v-form>
         </v-tabs-window-item>
-
         <v-tabs-window-item value="signup">
           <v-form fast-fail @submit.prevent>
             <v-text-field
@@ -31,46 +29,55 @@
               :rules="usernameRules"
               label="Username"
             ></v-text-field>
-
             <v-text-field
               v-model="password"
               :rules="passwordRules"
               label="Password"
+              type="password"
             ></v-text-field>
-
+            <v-text-field
+              v-model="repeat"
+              :rules="repeatRules"
+              type="password"
+              label="Repeat Password"
+            ></v-text-field>
             <v-select
               label="Select group"
               :rules="groupRules"
               :items="['Group A', 'Group B']"
             ></v-select>
-
-            <v-btn class="my-2" type="submit" block @click="submitSignup">Submit</v-btn>
+            <v-btn class="mt-2" type="submit" block @click="submitSignup">Submit</v-btn>
           </v-form>
         </v-tabs-window-item>
       </v-tabs-window>
-      <v-divider class="my-4" />
-      <v-card class="ma-4" color="primary">
-        <div class="d-flex justify-center">
-          <v-btn class="ma-2" width="150" @click="anyone">
-            Anyone
-          </v-btn>
-        </div>
-        <div class="d-flex justify-center">
-          <v-btn class="ma-2" width="150" @click="groupA">
-            Group A
-          </v-btn>
-        </div>
-        <div class="d-flex justify-center">
-          <v-btn class="ma-2" width="150" @click="groupB">
-            Group B
-          </v-btn>
-        </div>
-        <div class="d-flex justify-center">
-          <v-btn class="ma-2" width="150" @click="secret">
-            Secret
-          </v-btn>
-        </div>
-      </v-card>
+    </v-card>
+    <v-card class="mx-auto my-auto" width="300" v-if="tempSignedFlag">
+      <h2 class="d-flex justify-center mt-2">
+        username
+      </h2>
+      <h3 class="d-flex justify-center mb-2">
+        anyone
+      </h3>
+      <div class="d-flex justify-center">
+        <v-btn class="ma-2" width="150" @click="anyone">
+          Anyone
+        </v-btn>
+      </div>
+      <div class="d-flex justify-center">
+        <v-btn class="ma-2" width="150" @click="groupA">
+          Group A
+        </v-btn>
+      </div>
+      <div class="d-flex justify-center">
+        <v-btn class="ma-2" width="150" @click="groupB">
+          Group B
+        </v-btn>
+      </div>
+      <div class="d-flex justify-center">
+        <v-btn class="ma-2" width="150" @click="secret">
+          Secret
+        </v-btn>
+      </div>
     </v-card>
   </v-app>
 </template>
@@ -80,6 +87,7 @@ import { ref } from 'vue'
 import axios from 'axios';
 
 const tab = ref(null)
+const tempSignedFlag = ref(false)
 
 const username = ref('')
 const usernameRules = [
@@ -113,6 +121,14 @@ value => {
   },
 ]
 
+const repeat = ref('')
+const repeatRules = [
+value => {
+  if (value === password) return true
+  return 'Passwords do not match.'
+}
+]
+
 const groupRules = [
 value => {
   if (value) return true
@@ -122,6 +138,7 @@ value => {
 
 function submitSignin() {
   console.log("signin placeholder")
+  tempSignedFlag.value = true
 }
 
 function submitSignup() {
