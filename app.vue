@@ -146,11 +146,14 @@ function submitSignin() {
 function submitSignup() {
   const data = { username: username.value, password: password.value }
   const secret = 'changeme'
-  const token = jwt.sign(data, secret, { expiresIn: '10m' })
 
-  /*
-  axios.post('http://localhost:8080/signup', {
-    // ...
+  const token = jwt.sign(data, secret, { expiresIn: '10m' })
+  const header = 'Bearer' + ' ' + token
+
+  axios.post('http://localhost:8080/signup', {}, {
+    headers: {
+    'Authorization': header
+    }
   })
   .then(function (response) {
     console.log(response);
@@ -158,7 +161,6 @@ function submitSignup() {
   .catch(function (error) {
     console.log(error);
   });
-  */
 }
 
 function anyone() {
