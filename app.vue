@@ -83,11 +83,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 const tab = ref(null)
 const tempSignedFlag = ref(false)
+const { sign, verify } = jwt;
 
 const username = ref('')
 const usernameRules = [
@@ -124,7 +126,7 @@ value => {
 const repeat = ref('')
 const repeatRules = [
 value => {
-  if (value === password) return true
+  if (value === password.value) return true
   return 'Passwords do not match.'
 }
 ]
@@ -137,14 +139,18 @@ value => {
 ]
 
 function submitSignin() {
-  console.log("signin placeholder")
+  console.log('signin placeholder')
   tempSignedFlag.value = true
 }
 
 function submitSignup() {
+  const data = { username: username.value, password: password.value }
+  const secret = 'changeme'
+  const token = jwt.sign(data, secret, { expiresIn: '10m' })
+
+  /*
   axios.post('http://localhost:8080/signup', {
-    username: username.value,
-    password: password.value
+    // ...
   })
   .then(function (response) {
     console.log(response);
@@ -152,6 +158,7 @@ function submitSignup() {
   .catch(function (error) {
     console.log(error);
   });
+  */
 }
 
 function anyone() {
