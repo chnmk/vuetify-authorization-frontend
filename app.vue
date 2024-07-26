@@ -7,30 +7,30 @@
       </v-tabs>
       <v-tabs-window v-model="tab">
         <v-tabs-window-item value="signin">
-          <v-form fast-fail @submit.prevent>
+          <v-form fast-fail @submit.prevent="submitSignin">
             <v-text-field
-              v-model="username"
+              v-model="usernameSignin"
               :rules="usernameRules"
               label="Username"
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="passwordSignin"
               :rules="passwordRules"
               label="Password"
               type="password"
             ></v-text-field>
-            <v-btn class="mt-2" type="submit" block @click="submitSignin">Submit</v-btn>
+            <v-btn class="mt-2" type="submit" block>Submit</v-btn>
           </v-form>
         </v-tabs-window-item>
         <v-tabs-window-item value="signup">
-          <v-form fast-fail @submit.prevent>
+          <v-form fast-fail @submit.prevent="submitSignup">
             <v-text-field
-              v-model="username"
+              v-model="usernameSignup"
               :rules="usernameRules"
               label="Username"
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="passwordSignup"
               :rules="passwordRules"
               label="Password"
               type="password"
@@ -45,8 +45,9 @@
               label="Select group"
               :rules="groupRules"
               :items="['Group A', 'Group B']"
+              v-model="group"
             ></v-select>
-            <v-btn class="mt-2" type="submit" block @click="submitSignup">Submit</v-btn>
+            <v-btn class="mt-2" type="submit" block>Submit</v-btn>
           </v-form>
         </v-tabs-window-item>
       </v-tabs-window>
@@ -89,9 +90,9 @@ import jwt from 'jsonwebtoken';
 
 const tab = ref(null)
 const tempSignedFlag = ref(false)
-const { sign, verify } = jwt;
 
-const username = ref('')
+const usernameSignin = ref('')
+const usernameSignup = ref('')
 const usernameRules = [
   value => {
     if (value?.length >= 5) return true
@@ -107,7 +108,8 @@ const usernameRules = [
   },
 ]
 
-const password = ref('')
+const passwordSignin = ref('')
+const passwordSignup = ref('')
 const passwordRules = [
 value => {
     if (value?.length >= 5) return true
@@ -126,11 +128,12 @@ value => {
 const repeat = ref('')
 const repeatRules = [
 value => {
-  if (value === password.value) return true
+  if (value === passwordSignup.value) return true
   return 'Passwords do not match.'
 }
 ]
 
+const group = ref('')
 const groupRules = [
 value => {
   if (value) return true
@@ -138,19 +141,33 @@ value => {
 }
 ]
 
-function submitSignin() {
+async function submitSignin(promise) {
+  const { valid } = await promise
+  if (!valid) {
+    return
+  }
   console.log('signin placeholder')
   tempSignedFlag.value = true
 }
 
-function submitSignup() {
-  const data = { username: username.value, password: password.value }
+async function submitSignup(promise) {
+  const { valid } = await promise
+  if (!valid) {
+    return
+  }
+
+  const data = { password: passwordSignup.value }
   const secret = 'changeme'
 
   const token = jwt.sign(data, secret, { expiresIn: '10m' })
   const header = 'Bearer' + ' ' + token
 
-  axios.post('http://localhost:8080/signup', {}, {
+  axios.post('http://localhost:8080/signup', 
+  {
+    username: usernameSignup.value, 
+    group: group.value
+  }, 
+  {
     headers: {
     'Authorization': header
     }
