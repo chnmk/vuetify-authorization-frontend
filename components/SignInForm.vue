@@ -16,6 +16,12 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
+import { useDefaultStore } from '#imports';
+
+const store = useDefaultStore()
+
 const usernameSignin = ref('')
 const usernameRules = [
   value => {
@@ -60,7 +66,7 @@ async function submitSignIn(promise) {
   const token = jwt.sign(data, secret, { expiresIn: '10m' })
   const header = 'Bearer' + ' ' + token
 
-  axios.post('http://localhost:8080/signup', 
+  axios.post('http://localhost:8080/signin', 
   {
     username: usernameSignin.value, 
   }, 
@@ -75,7 +81,7 @@ async function submitSignIn(promise) {
       alert("Invalid username or password.")
     } else if (response.status == 200) {
       alert("Success!")
-      tempSignedFlag.value = true
+      store.switchTempSignedFlag()
     }
   })
   .catch(function(error) {
