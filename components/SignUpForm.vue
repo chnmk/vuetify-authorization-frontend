@@ -86,7 +86,7 @@ async function submitSignUp(promise) {
   }
 
   const data = { password: passwordSignup.value }
-  const secret = 'changeme'
+  const secret = 'password_changeme'
 
   const token = jwt.sign(data, secret, { expiresIn: '10m' })
   const header = 'Bearer' + ' ' + token
@@ -101,7 +101,7 @@ async function submitSignUp(promise) {
     'Authorization': header
     }
   })
-  .then(function (response) {
+  .then(function(response) {
     console.log(response);
     if (response.status == 400) {
       alert("User already exists!")
@@ -109,7 +109,7 @@ async function submitSignUp(promise) {
       alert("Success! Sign in with your credentials.")
     }
   })
-  .catch(function (error) {
+  .catch(function(error) {
     console.log(error);
   });
 }

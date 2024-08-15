@@ -53,8 +53,33 @@ async function submitSignIn(promise) {
   if (!valid) {
     return
   }
-  console.log('signin placeholder')
-  tempSignedFlag.value = true
-}
 
+  const data = { password: passwordSignin.value }
+  const secret = 'password_changeme'
+
+  const token = jwt.sign(data, secret, { expiresIn: '10m' })
+  const header = 'Bearer' + ' ' + token
+
+  axios.post('http://localhost:8080/signup', 
+  {
+    username: usernameSignin.value, 
+  }, 
+  {
+    headers: {
+    'Authorization': header
+    }
+  })
+  .then(function(response) {
+    console.log(response);
+    if (response.status == 400) {
+      alert("Invalid username or password.")
+    } else if (response.status == 200) {
+      alert("Success!")
+      tempSignedFlag.value = true
+    }
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+}
 </script>
