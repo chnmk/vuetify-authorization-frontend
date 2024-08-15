@@ -103,6 +103,11 @@ async function submitSignUp(promise) {
   })
   .then(function (response) {
     console.log(response);
+    if (response.status == 400) {
+      alert("User already exists!")
+    } else if (response.status == 200) {
+      alert("Success! Sign in with your credentials.")
+    }
   })
   .catch(function (error) {
     console.log(error);
