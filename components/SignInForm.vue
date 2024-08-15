@@ -61,9 +61,9 @@ async function submitSignIn(promise) {
   }
 
   const data = { password: passwordSignin.value }
-  const secret = 'password_changeme'
+  const password_secret = 'password_changeme'
 
-  const token = jwt.sign(data, secret, { expiresIn: '10m' })
+  const token = jwt.sign(data, password_secret, { expiresIn: '10m' })
   const header = 'Bearer' + ' ' + token
 
   axios.post('http://localhost:8080/signin', 
@@ -78,10 +78,23 @@ async function submitSignIn(promise) {
   .then(function(response) {
     console.log(response);
     if (response.status == 400) {
-      alert("Invalid username or password.")
+      alert('Invalid username or password.')
     } else if (response.status == 200) {
-      alert("Success!")
-      store.switchTempSignedFlag()
+      const h = response.headers['Authorization']
+      console.log(h)
+      const h_split = h.split(' ')
+      console.log(h_split)
+
+      const authorization_secret = 'authorization_changeme'
+      jwt.verify(h_split[1], authorization_secret, (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          alert('Success!')
+          store.switchTempSignedFlag()
+          store.setStoredJwtValue(h_split[1])
+        }
+      })
     }
   })
   .catch(function(error) {
