@@ -78,29 +78,26 @@ async function submitSignIn(promise) {
     }
   })
   .then(function(response) {
-    console.log(response);
-    if (response.status == 400) {
-      alert('Invalid username or password.')
-    } else if (response.status == 200) {
-      const h = response.headers['Authorization']
-      console.log(h)
-      const h_split = h.split(' ')
-      console.log(h_split)
+    // console.log(response)
+    const h = response.headers['Authorization']
+    console.log(h)
+    const h_split = h.split(' ')
+    console.log(h_split)
 
-      const authorization_secret = 'authorization_changeme'
-      jwt.verify(h_split[1], authorization_secret, (err) => {
-        if (err) {
-          console.log(err)
-        } else {
-          alert('Success!')
-          store.switchTempSignedFlag()
-          store.setStoredJwtValue(h_split[1])
-        }
-      })
-    }
+    const authorization_secret = 'authorization_changeme'
+    jwt.verify(h_split[1], authorization_secret, (err) => {
+      if (err) {
+        console.log(err)
+      } else {
+        alert('Success!')
+        store.switchTempSignedFlag()
+        store.setStoredJwtValue(h_split[1])
+      }
+    })
   })
   .catch(function(error) {
-    console.log(error);
+    alert('Invalid username or password.')
+    // console.log(error);
   });
 }
 </script>

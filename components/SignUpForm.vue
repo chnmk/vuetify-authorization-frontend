@@ -104,15 +104,12 @@ async function submitSignUp(promise) {
     }
   })
   .then(function(response) {
-    console.log(response);
-    if (response.status == 400) {
-      alert("User already exists!")
-    } else if (response.status == 200) {
-      alert("Success! Sign in with your credentials.")
-    }
+    alert("Success! Sign in with your credentials.")
+    // console.log(response)
   })
   .catch(function(error) {
-    console.log(error);
+    alert("User already exists!")
+    // console.log(error);
   });
 }
 </script>
