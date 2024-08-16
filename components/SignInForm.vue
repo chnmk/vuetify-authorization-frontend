@@ -68,6 +68,8 @@ async function submitSignIn(promise) {
   const token = jwt.sign(data_string, password_secret)
   const header = 'Bearer' + ' ' + token
 
+  let success = false
+
   axios.post('http://localhost:8080/signin', 
   {
     username: usernameSignin.value, 
@@ -78,26 +80,30 @@ async function submitSignIn(promise) {
     }
   })
   .then(function(response) {
-    // console.log(response)
-    const h = response.headers['Authorization']
-    console.log(h)
-    const h_split = h.split(' ')
-    console.log(h_split)
-
     const authorization_secret = 'authorization_changeme'
-    jwt.verify(h_split[1], authorization_secret, (err) => {
+
+    jwt.verify(response.data, authorization_secret, (err) => {
       if (err) {
         console.log(err)
       } else {
         alert('Success!')
+        success = true
+
         store.switchTempSignedFlag()
-        store.setStoredJwtValue(h_split[1])
+        store.setStoredJwtValue(response.data)
+        store.setUsername(usernameSignin.value)
+
+        const decoded = jwt.decode(response.data)
+        store.setGroup(decoded.group)
       }
     })
+    // console.log(response.data)
   })
   .catch(function(error) {
-    alert('Invalid username or password.')
-    // console.log(error);
+    if (!success) {
+      alert('Invalid username or password.')
+    }
+    console.log(error);
   });
 }
 </script>

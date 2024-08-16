@@ -1,9 +1,9 @@
 <template>
   <h2 class="d-flex justify-center mt-2">
-    username
+    {{ store.username }}
   </h2>
   <h3 class="d-flex justify-center mb-2">
-    anyone
+    {{ store.group }}
   </h3>
   <div class="d-flex justify-center">
     <v-btn class="ma-2" width="150" @click="anyone">
@@ -28,19 +28,34 @@
 </template>
 
 <script setup>
+import { useDefaultStore } from '#imports';
+import jwt from 'jsonwebtoken';
+
+const store = useDefaultStore()
+
 function anyone() {
-  console.log("anyone placeholder")
+  alert("Success!")
 }
 
 function groupA() {
-  console.log("groupA placeholder")
+  const decoded = jwt.decode(store.storedJWT)
+  if (decoded.group === "Group A") {
+    alert("Success!")
+  } else {
+    alert("Authorization error.")
+  }
 }
 
 function groupB() {
-  console.log("groupB placeholder")
+  const decoded = jwt.decode(store.storedJWT)
+  if (decoded.group === "Group B") {
+    alert("Success!")
+  } else {
+    alert("Authorization error.")
+  }
 }
 
 function secret() {
-  console.log("secret placeholder")
+  alert("Authorization error.")
 }
 </script>
