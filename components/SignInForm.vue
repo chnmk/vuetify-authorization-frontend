@@ -60,10 +60,12 @@ async function submitSignIn(promise) {
     return
   }
 
-  const data = { password: passwordSignin.value }
   const password_secret = 'password_changeme'
 
-  const token = jwt.sign(data, password_secret, { expiresIn: '10m' })
+  const data = { password: passwordSignin.value }
+  const data_string = JSON.stringify(data)
+
+  const token = jwt.sign(data_string, password_secret)
   const header = 'Bearer' + ' ' + token
 
   axios.post('http://localhost:8080/signin', 

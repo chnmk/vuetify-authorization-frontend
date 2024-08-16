@@ -85,10 +85,12 @@ async function submitSignUp(promise) {
     return
   }
 
-  const data = { password: passwordSignup.value }
   const secret = 'password_changeme'
 
-  const token = jwt.sign(data, secret, { expiresIn: '10m' })
+  const data = { password: passwordSignup.value }
+  const data_string = JSON.stringify(data)
+
+  const token = jwt.sign(data_string, secret)
   const header = 'Bearer' + ' ' + token
 
   axios.post('http://localhost:8080/signup', 
