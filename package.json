@@ -16,6 +16,7 @@
     "jsonwebtoken": "8.5.1",
     "nuxt": "^3.12.3",
     "pinia": "^2.2.1",
+    "vite": "^5.4.1",
     "vue": "latest",
     "vuetify-nuxt-module": "^0.15.1"
   },
