@@ -80,19 +80,27 @@ value => {
 ]
 
 async function submitSignUp(promise) {
+  // Wait for input validation
   const { valid } = await promise
   if (!valid) {
     return
   }
 
-  const secret = 'password_changeme'
-
+  // Create payload for JWT
   const data = { password: passwordSignup.value }
+
+  // Convert the payload to string format
+  // to avoid getting iat data when token is signed
   const data_string = JSON.stringify(data)
 
+  // Create JWT token
+  const secret = 'password_changeme'
   const token = jwt.sign(data_string, secret)
+
+  // Post request header string
   const header = 'Bearer' + ' ' + token
 
+  // Post password token in header and other data in body
   axios.post('http://localhost:8080/signup', 
   {
     username: usernameSignup.value, 

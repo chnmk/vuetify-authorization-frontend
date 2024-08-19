@@ -55,21 +55,30 @@ value => {
 ]
 
 async function submitSignIn(promise) {
+  // Wait for input validation
   const { valid } = await promise
   if (!valid) {
     return
   }
 
-  const password_secret = 'password_changeme'
-
+  // Create payload for JWT
   const data = { password: passwordSignin.value }
+
+  // Convert the payload to string format
+  // to avoid getting iat data when token is signed
   const data_string = JSON.stringify(data)
 
+  // Create JWT token
+  const password_secret = 'password_changeme'
   const token = jwt.sign(data_string, password_secret)
+
+  // Post request header string
   const header = 'Bearer' + ' ' + token
 
+  // Error message workaround
   let success = false
 
+  // Post password token in header and username in body
   axios.post('http://localhost:8080/signin', 
   {
     username: usernameSignin.value, 
@@ -80,8 +89,9 @@ async function submitSignIn(promise) {
     }
   })
   .then(function(response) {
+    // Validate backend response
     const authorization_secret = 'authorization_changeme'
-
+    
     jwt.verify(response.data, authorization_secret, (err) => {
       if (err) {
         console.log(err)
@@ -89,7 +99,8 @@ async function submitSignIn(promise) {
         alert('Success!')
         success = true
 
-        store.switchTempSignedFlag()
+        // Store response data in Pinia
+        store.switchSigned()
         store.setStoredJwtValue(response.data)
         store.setUsername(usernameSignin.value)
 
@@ -103,7 +114,7 @@ async function submitSignIn(promise) {
     if (!success) {
       alert('Invalid username or password.')
     }
-    console.log(error);
+    // console.log(error);
   });
 }
 </script>

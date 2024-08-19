@@ -1,75 +1,38 @@
-# Nuxt 3 Minimal Starter
+# Vuetify Authorization Frontend
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Built with Vue 3, Nuxt, Pinia and Vuetify.
+
+See also: [Go Authorization Server](https://github.com/chnmk/go-authorization-server).
+
+## Features
+
+### Implemented features:
+
+* Sign In and Sign Up forms
+* Username and password validation
+* Sending password as JSON Web Token
+* Server response handling
+* Basic user permissions check
+
+### NOT implemented in this project:
+
+* Saving data on page refresh
+* Logout button
+* Additional security measures
+* Testing and proper error handling
 
 ## Setup
 
-Make sure to install the dependencies:
-
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
+# Make sure to install the dependencies:
 yarn install
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
+# Start the development server on `http://localhost:3000`:
 yarn dev
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
+# Build the application for production:
 yarn build
 
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
+# Locally preview production build:
 yarn preview
-
-# bun
-bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

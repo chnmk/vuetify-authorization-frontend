@@ -1,16 +1,15 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia'
-import jwt from 'jsonwebtoken';
 
 export const useDefaultStore = defineStore('default', () => {
 
-  const tempSignedFlag = ref(false)
+  const signed = ref(false)
   const storedJWT = ref('')
   const username = ref('')
   const group = ref('')
 
-  function switchTempSignedFlag() {
-    tempSignedFlag.value = !tempSignedFlag.value
+  function switchSigned() {
+    signed.value = !signed.value
   }
 
   function setStoredJwtValue(value: string) {
@@ -26,8 +25,8 @@ export const useDefaultStore = defineStore('default', () => {
   }
 
   return { 
-    tempSignedFlag, 
-    switchTempSignedFlag, 
+    signed, 
+    switchSigned, 
     storedJWT, 
     setStoredJwtValue, 
     username, 
@@ -35,4 +34,5 @@ export const useDefaultStore = defineStore('default', () => {
     group,
     setGroup
   }
+
 })

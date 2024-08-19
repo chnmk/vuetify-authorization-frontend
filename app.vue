@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-card class="mx-auto my-auto" width="300" v-if="!store.tempSignedFlag">
+    <v-card class="mx-auto my-auto" width="300" v-if="!store.signed">
       <v-tabs class="ma-4" v-model="tab" align-tabs="center">
         <v-tab value="signin">Sign In</v-tab>
         <v-tab value="signup">Sign Up</v-tab>
@@ -14,7 +14,7 @@
         </v-tabs-window-item>
       </v-tabs-window>
     </v-card>
-    <v-card class="mx-auto my-auto" width="300" v-if="store.tempSignedFlag">
+    <v-card class="mx-auto my-auto" width="300" v-if="store.signed">
       <ButtonsField />
     </v-card>
   </v-app>
